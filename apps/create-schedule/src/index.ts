@@ -8,11 +8,19 @@ import { randomUUID } from 'crypto';
 const schedulerClient = new SchedulerClient();
 const delay = 1000 * 60 * 1;
 
+type Event = {
+  message: string;
+};
+
 export const handler = async () => {
   const id = randomUUID();
   const name = `one-time-schedule-${id}`;
   const scheduledDate = new Date(Date.now() + delay);
   const formattedDate = getFormattedDate(scheduledDate);
+
+  const eventBody: Event = {
+    message: `Event trigger for ID ${id}`,
+  };
 
   const input: CreateScheduleInput = {
     Name: name,
@@ -22,6 +30,7 @@ export const handler = async () => {
     Target: {
       Arn: process.env.TARGET_ARN,
       RoleArn: process.env.ROLE_ARN,
+      Input: JSON.stringify(eventBody),
       // DeadLetterConfig: {
       //   Arn: process.env.DEAD_LETTER_ARN,
       // },

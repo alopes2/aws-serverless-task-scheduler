@@ -16,15 +16,15 @@ export const handler = async () => {
 
   const input: CreateScheduleInput = {
     Name: name,
-    ScheduleExpression: `at(${formattedDate})`,
+    ScheduleExpression: `at(${formattedDate})`, //format yyyy-MM-ddTHH:mm:ss
     ScheduleExpressionTimezone: 'UTC',
     ActionAfterCompletion: 'DELETE',
     Target: {
       Arn: process.env.TARGET_ARN,
       RoleArn: process.env.ROLE_ARN,
-      DeadLetterConfig: {
-        Arn: process.env.DEAD_LETTER_ARN,
-      },
+      // DeadLetterConfig: {
+      //   Arn: process.env.DEAD_LETTER_ARN,
+      // },
     },
     FlexibleTimeWindow: {
       Mode: 'OFF',
@@ -55,6 +55,7 @@ export const handler = async () => {
   }
 };
 
+// Converts date to format yyyy-MM-ddTHH:mm:ss
 function getFormattedDate(date: Date): string {
   const formattedDate = `${
     date.getUTCFullYear

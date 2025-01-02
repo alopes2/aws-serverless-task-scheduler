@@ -80,6 +80,17 @@ resource "aws_lambda_function" "create_schedule" {
 
 data "aws_iam_policy_document" "create_schedule_policies" {
   source_policy_documents = [data.aws_iam_policy_document.policies.json]
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "iam:PassRole"
+    ]
+    resources = [
+      aws_iam_role.periodic_schedule.arn
+    ]
+  }
+
   statement {
     effect = "Allow"
     actions = [

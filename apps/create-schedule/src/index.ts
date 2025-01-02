@@ -57,7 +57,18 @@ export const handler = async () => {
 
 // Converts date to format yyyy-MM-ddTHH:mm:ss
 function getFormattedDate(date: Date): string {
-  const formattedDate = `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}T${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}`;
+  const year = date.getUTCFullYear();
+  const month = getValueWithPrefix(date.getUTCMonth() + 1);
+  const day = getValueWithPrefix(date.getUTCDate());
+  const hours = getValueWithPrefix(date.getUTCHours());
+  const minutes = getValueWithPrefix(date.getUTCMinutes());
+  const seconds = getValueWithPrefix(date.getUTCSeconds());
+
+  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
   return formattedDate;
+}
+
+function getValueWithPrefix(value: number): string {
+  return value < 10 ? `0${value}` : `${value}`;
 }

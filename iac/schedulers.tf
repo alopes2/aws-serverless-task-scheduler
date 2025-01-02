@@ -1,12 +1,12 @@
 resource "aws_scheduler_schedule" "periodic" {
-  name                = "periodic-scheduler"
-  description         = "A scheduler that runs every minute"
+  name                = "periodic-schedule"
+  description         = "A schedule that runs every minute"
   schedule_expression = "rate(1 minute)" // You coude also use cron(0/1 * * * ? *)
   target {
     arn      = aws_lambda_function.lambda.arn
-    role_arn = aws_iam_role.periodic_scheduler.arn
+    role_arn = aws_iam_role.periodic_schedule.arn
     input = jsonencode({
-      "message" = "Periodic scheduler trigger this lambda"
+      "message" = "Periodic schedule trigger this lambda"
     })
   }
   flexible_time_window {
@@ -14,14 +14,14 @@ resource "aws_scheduler_schedule" "periodic" {
   }
 }
 
-resource "aws_iam_role" "periodic_scheduler" {
-  name               = "scheduler_role"
+resource "aws_iam_role" "periodic_schedule" {
+  name               = "schedule_role"
   assume_role_policy = data.aws_iam_policy_document.assume_policy.json
 }
 
-resource "aws_iam_role_policy" "periodic_scheduler_role_policy" {
-  role   = aws_iam_role.periodic_scheduler.name
-  policy = data.aws_iam_policy_document.periodic_scheduler_policies.json
+resource "aws_iam_role_policy" "periodic_schedule_role_policy" {
+  role   = aws_iam_role.periodic_schedule.name
+  policy = data.aws_iam_policy_document.periodic_schedule_policies.json
 }
 
 data "aws_iam_policy_document" "assume_policy" {
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "assume_policy" {
   }
 }
 
-data "aws_iam_policy_document" "periodic_scheduler_policies" {
+data "aws_iam_policy_document" "periodic_schedule_policies" {
   statement {
     actions = [
       "lambda:InvokeFunction"

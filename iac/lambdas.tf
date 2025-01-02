@@ -1,17 +1,17 @@
-resource "aws_iam_role" "scheduler_handler" {
-  name               = "scheduler-handler-lambda-role"
+resource "aws_iam_role" "schedule_handler" {
+  name               = "schedule-handler-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-resource "aws_iam_role_policy" "scheduler_handler_policies" {
-  role   = aws_iam_role.scheduler_handler.name
+resource "aws_iam_role_policy" "schedule_handler_policies" {
+  role   = aws_iam_role.schedule_handler.name
   policy = data.aws_iam_policy_document.policies.json
 }
 
 resource "aws_lambda_function" "lambda" {
   filename      = data.archive_file.archive.output_path
-  function_name = "scheduler-handler"
-  role          = aws_iam_role.scheduler_handler.arn
+  function_name = "schedule-handler"
+  role          = aws_iam_role.schedule_handler.arn
   handler       = "index.handler"
   runtime       = "nodejs22.x"
 }

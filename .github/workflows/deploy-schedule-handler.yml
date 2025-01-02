@@ -1,19 +1,19 @@
-name: Deploy Scheduler Handler Lambda
+name: Deploy schedule Handler Lambda
 on:
   push:
     branches:
       - main
     paths:
-      - apps/scheduler-handler/**/*
-      - .github/workflows/deploy-scheduler-handler.yml
+      - apps/schedule-handler/**/*
+      - .github/workflows/deploy-schedule-handler.yml
 
 defaults:
   run:
-    working-directory: apps/scheduler-handler/
+    working-directory: apps/schedule-handler/
 
 jobs:
   terraform:
-    name: 'Deploy Scheduler Handler Lambda'
+    name: 'Deploy schedule Handler Lambda'
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -42,4 +42,4 @@ jobs:
         run: cd build && zip -r ../main.zip .
 
       - name: Update Lambda code
-        run: aws lambda update-function-code --function-name=scheduler-handler --zip-file=fileb://main.zip
+        run: aws lambda update-function-code --function-name=schedule-handler --zip-file=fileb://main.zip

@@ -1,15 +1,13 @@
-import type { ScheduledEvent } from 'aws-lambda';
-
-type Event = {
+type ScheduledEvent = {
   message: string;
 };
 
-export const handler = async (event: ScheduledEvent<Event>) => {
-  console.log('Received scheduled event: ', event);
+export const handler = async (event: ScheduledEvent) => {
+  console.log('Received schedule event: ', event);
 
   const response = {
     statusCode: 200,
-    body: JSON.stringify('Processed scheduled event'),
+    body: JSON.stringify('Processed schedule event'),
   };
 
   return response;

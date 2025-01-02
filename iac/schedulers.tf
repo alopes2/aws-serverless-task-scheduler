@@ -9,9 +9,15 @@ resource "aws_scheduler_schedule" "periodic" {
       "message" = "Periodic schedule trigger this lambda"
     })
   }
+
+  start_date = "2025-02-01T01:00:00Z"
+  end_date   = "2030-01-01T01:00:00Z"
+
   flexible_time_window {
     mode = "OFF"
   }
+
+  state = "DISABLED"
 }
 
 resource "aws_iam_role" "periodic_schedule" {

@@ -1,0 +1,22 @@
+{
+  "name": "create-schedule",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-scheduler": "^3.716.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.146",
+    "@types/node": "^22.10.3",
+    "copyfiles": "^2.4.1"
+  }
+}

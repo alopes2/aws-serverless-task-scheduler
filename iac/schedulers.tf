@@ -8,7 +8,17 @@ resource "aws_scheduler_schedule" "periodic" {
     input = jsonencode({
       "message" = "Periodic schedule trigger this lambda"
     })
+    retry_policy {
+      maximum_event_age_in_seconds = 60
+      maximum_retry_attempts       = 5
+    }
+
+    # dead_letter_config {
+    #   arn = aws_sqs_queue.dead_letter_queue.arn
+    # }
   }
+
+
 
   start_date = "2025-02-01T01:00:00Z"
   end_date   = "2030-01-01T01:00:00Z"
@@ -18,6 +28,33 @@ resource "aws_scheduler_schedule" "periodic" {
   }
 
   state = "DISABLED"
+}
+
+resource "aws_scheduler_schedule" "one_time" {
+  name                         = "one-time-schedule"
+  description                  = "A schedule that runs only once"
+  schedule_expression          = "at(2025-02-01T01:00:00)"
+  schedule_expression_timezone = "UTC"
+
+  target {
+    arn      = aws_lambda_function.lambda.arn
+    role_arn = aws_iam_role.periodic_schedule.arn
+    input = jsonencode({
+      "message" = "One time schedule triggered"
+    })
+    retry_policy {
+      maximum_event_age_in_seconds = 60
+      maximum_retry_attempts       = 5
+    }
+
+    # dead_letter_config {
+    #   arn = aws_sqs_queue.dead_letter_queue.arn
+    # }
+  }
+
+  flexible_time_window {
+    mode = "OFF"
+  }
 }
 
 resource "aws_iam_role" "periodic_schedule" {
@@ -49,4 +86,12 @@ data "aws_iam_policy_document" "periodic_schedule_policies" {
     effect    = "Allow"
     resources = [aws_lambda_function.lambda.arn]
   }
+
+  # statement {
+  #   actions = [
+  #     "sqs:SendMessage"
+  #   ]
+  #   effect    = "Allow"
+  #   resources = [aws_sqs_queue.dead_letter_queue.arn]
+  # }
 }

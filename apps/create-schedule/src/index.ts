@@ -58,7 +58,7 @@ export const handler = async () => {
 
     return response;
   } catch (error: any) {
-    console.error('Error creating schedule: %s', error.message);
+    console.error('Error creating schedule: %s', error);
 
     throw error;
   }
